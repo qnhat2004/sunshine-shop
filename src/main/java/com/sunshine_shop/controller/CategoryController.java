@@ -29,7 +29,7 @@ public class CategoryController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Category> updateCategory(@PathVariable Long id, @RequestBody Category category) {
+    public ResponseEntity<Category> updateCategory(@PathVariable Long id, @RequestBody Category category) {     // @RequestBody annotation is used to bind (ràng buộc) the request body with a method parameter.
         return ResponseEntity.ok(categoryService.updateCategory(id, category));
     }
 
