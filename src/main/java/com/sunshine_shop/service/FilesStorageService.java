@@ -1,7 +1,7 @@
 package com.sunshine_shop.service;
 
 import com.sunshine_shop.service.interfaceService.IFilesStorageService;
-import jakarta.annotation.Resource;
+import org.springframework.core.io.Resource;
 
 import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
@@ -30,10 +30,13 @@ public class FilesStorageService implements IFilesStorageService {
         }
     }
 
+    // Luu ảnh vào thư mục uploads, trả về url của ảnh
     @Override
-    public void save(MultipartFile file) {
+    public String save(MultipartFile file) {
         try {
-            Files.copy(file.getInputStream(), this.root.resolve(file.getOriginalFilename()));   // Đầu tiên, lấy InputStream từ file được upload, sau đó copy vào file có đường dẫn là root/filename
+            String fileName = getFileName(file); // Lấy tên file mới
+            Files.copy(file.getInputStream(), this.root.resolve(fileName));   // Đầu tiên, lấy InputStream từ file được upload, sau đó copy vào file có đường dẫn là root/filename
+            return "http://localhost:8080/files/" + fileName; // Trả về url của ảnh, thì khi muốn lấy ảnh này thì chỉ cần truy cập vào url này
         } catch (Exception e) {
             if (e instanceof FileAlreadyExistsException) {
                 throw new RuntimeException("A file of that name already exists.");
@@ -48,7 +51,7 @@ public class FilesStorageService implements IFilesStorageService {
         try {
             Path file = root.resolve(filename); // Tạo đường dẫn đến file cần load
             // UrlResource: Đọc file từ URL
-            UrlResource resource = new UrlResource(file.toUri());   // file.toUri(): Chuyển đường dẫn (Path) thành một đối tượng URI (Uniform Resource Identifier). Ví dụ: Đường dẫn uploads/example.txt sẽ được chuyển thành URI: file:///path/to/uploads/example.txt.
+            UrlResource resource = new UrlResource(file.toUri());   // file.toUri(): Chuyển đường dẫn (Path) thành một đối tượng URI (Uniform Resource Identifier). Ví dụ: Đường dẫn uploads/example.txt sẽ được chuyển thành URI: file:///path/to/uploads/example.txt., UrlResource: Đọc file từ URL
                         
             if (resource.exists() || resource.isReadable()) {
                 return (Resource) resource;
@@ -72,5 +75,10 @@ public class FilesStorageService implements IFilesStorageService {
         } catch (IOException e) {
             throw new RuntimeException("Could not load the files!");
         }
+    }
+
+    @Override
+    public String getFileName(MultipartFile file) {
+        return System.currentTimeMillis() + "_" + file.getOriginalFilename(); // Tạo tên file mới bằng cách thêm timestamp vào trước tên file
     }
 }
