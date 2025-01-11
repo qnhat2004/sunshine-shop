@@ -1,6 +1,7 @@
 package com.sunshine_shop.controller;
 
 import com.sunshine_shop.dtos.UserDTO;
+import com.sunshine_shop.entity.User;
 import com.sunshine_shop.service.UserService;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
@@ -34,9 +35,10 @@ public class UserController {
         return ResponseEntity.ok(userService.createUser(userDTO, rawPassword));
     }
 
+    // User update profile (include change password)
     @PutMapping("/update/{id}")
-    public ResponseEntity<UserDTO> updateUser(@PathVariable Long id, @RequestBody UserDTO userDTO, @RequestParam String rawPassword) {
-        return ResponseEntity.ok(userService.updateUser(id, userDTO, rawPassword));
+    public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody User user) {
+        return ResponseEntity.ok(userService.updateUser(id, user));
     }
 
     @PutMapping("/edit/{id}")
