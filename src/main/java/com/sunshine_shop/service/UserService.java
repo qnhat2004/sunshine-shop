@@ -47,22 +47,21 @@ public class UserService implements IUserService {
     // User update profile (include change password)
     @Transactional
     @Override
-    public UserDTO updateUser(Long id, UserDTO userDTO, String rawPassword) {
-        String encodedPassword = passwordService.encodePassword(rawPassword);
+    public User updateUser(Long id, User user) {
         User currentUser = userRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("User not found"));
-        currentUser.setUsername(userDTO.getUsername());
-        currentUser.setEmail(userDTO.getEmail());
-        currentUser.setPassword(encodedPassword);
-        currentUser.setRole(userDTO.getRole());
-        currentUser.setStatus(userDTO.getStatus());
-        currentUser.setFullname(userDTO.getFullname());
-        currentUser.setAddress(userDTO.getAddress());
-        currentUser.setPhone(userDTO.getPhone());
-        currentUser.setToken(userDTO.getToken());
-        currentUser.setUpdated_at(userDTO.getUpdatedAt());
+        currentUser.setUsername(user.getUsername());
+        currentUser.setEmail(user.getEmail());
+        currentUser.setPassword(user.getPassword());
+        currentUser.setRole(user.getRole());
+        currentUser.setStatus(user.getStatus());
+        currentUser.setFullname(user.getFullname());
+        currentUser.setAddress(user.getAddress());
+        currentUser.setPhone(user.getPhone());
+        currentUser.setToken(user.getToken());
+        currentUser.setUpdated_at(user.getUpdated_at());
         User updatedUser = userRepository.save(currentUser);
-        return UserMapper.toDTO(updatedUser);
+        return updatedUser;
     }
 
     @Transactional

@@ -10,7 +10,7 @@ public interface IUserService {
     List<UserDTO> getAllUsers();
     UserDTO getUserById(Long id);
     UserDTO createUser(UserDTO userDTO, String rawPassword);
-    UserDTO updateUser(Long id, UserDTO userDTO, String rawPassword);    // User edit profile
+    User updateUser(Long id, User user);    // User update profile
     void deleteUser(Long id);
     UserDTO editUser(Long id, UserDTO user);    // Admin edit user
 }
