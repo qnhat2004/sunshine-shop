@@ -32,6 +32,7 @@ public class Product {
     @Column(nullable = false, name = "quantity")
     private int quantity;
 
+    // Save the url of the image
     @Column(nullable = false, name = "image")
     private String image;
 

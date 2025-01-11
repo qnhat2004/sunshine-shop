@@ -1,5 +1,6 @@
 package com.sunshine_shop.controller;
 
+import com.sunshine_shop.dtos.ProductDTO;
 import com.sunshine_shop.entity.Product;
 import com.sunshine_shop.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,18 +23,18 @@ public class ProductController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Product> getProductById(Long id) {
+    public ResponseEntity<Product> getProductById(@PathVariable Long id) {
         return ResponseEntity.ok(productService.getProductById(id));
     }
 
     @PostMapping
-    public ResponseEntity<Product> createProduct(@RequestBody Product product) {
-        return ResponseEntity.ok(productService.createProduct(product));
+    public ResponseEntity<Product> createProduct(@ModelAttribute ProductDTO productDTO) {
+        return ResponseEntity.ok(productService.createProduct(productDTO));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Product> updateProduct(@PathVariable Long id, @RequestBody Product product) {
-        return ResponseEntity.ok(productService.updateProduct(id, product));
+    public ResponseEntity<?> updateProduct(@PathVariable Long id, @ModelAttribute ProductDTO productDTO) {
+        return ResponseEntity.ok(productService.updateProduct(id, productDTO));
     }
 
     @DeleteMapping("/{id}")
